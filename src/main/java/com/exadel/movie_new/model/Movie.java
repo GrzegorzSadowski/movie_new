@@ -1,34 +1,20 @@
 package com.exadel.movie_new.model;
 
+import java.util.List;
+
 public class Movie {
     private String tagline;
-    private String vote_average;
-    private String vote_count;
-    private String release_date;
-    private String poster_path;
+    private String voteAverage;
+    private String voteCount;
+    private String releaseDate;
+    private String posterPath;
     private String overview;
     private String budget;
     private String revenue;
-    private String[] genres;
+    private List<String> genres;
     private String runtime;
     private String id;
     private String title;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getTagline() {
         return tagline;
@@ -38,36 +24,36 @@ public class Movie {
         this.tagline = tagline;
     }
 
-    public String getVote_average() {
-        return vote_average;
+    public String getVoteAverage() {
+        return voteAverage;
     }
 
-    public void setVote_average(String vote_average) {
-        this.vote_average = vote_average;
+    public void setVoteAverage(String voteAverage) {
+        this.voteAverage = voteAverage;
     }
 
-    public String getVote_count() {
-        return vote_count;
+    public String getVoteCount() {
+        return voteCount;
     }
 
-    public void setVote_count(String vote_count) {
-        this.vote_count = vote_count;
+    public void setVoteCount(String voteCount) {
+        this.voteCount = voteCount;
     }
 
-    public String getRelease_date() {
-        return release_date;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
-    public String getPoster_path() {
-        return poster_path;
+    public String getPosterPath() {
+        return posterPath;
     }
 
-    public void setPoster_path(String poster_path) {
-        this.poster_path = poster_path;
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 
     public String getOverview() {
@@ -94,11 +80,11 @@ public class Movie {
         this.revenue = revenue;
     }
 
-    public String[] getGenres() {
+    public List<String> getGenres() {
         return genres;
     }
 
-    public void setGenres(String[] genres) {
+    public void setGenres(List<String> genres) {
         this.genres = genres;
     }
 
@@ -110,5 +96,19 @@ public class Movie {
         this.runtime = runtime;
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

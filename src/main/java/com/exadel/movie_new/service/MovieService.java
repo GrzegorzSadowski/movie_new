@@ -2,11 +2,15 @@ package com.exadel.movie_new.service;
 
 import com.exadel.movie_new.model.Movie;
 
+import java.util.List;
+
 public interface MovieService {
 
     Movie addMovie(Movie movie);
 
-    Movie getMovieDetails(String movieId);
+    List<Movie> getAllMovies();
+
+    Movie getMovie(String movieId);
 
     Movie updateMovie(Movie movie);
 
