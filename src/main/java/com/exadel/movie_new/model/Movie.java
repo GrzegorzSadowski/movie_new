@@ -1,5 +1,7 @@
 package com.exadel.movie_new.model;
 
+import java.util.List;
+
 public class Movie {
     private String tagline;
     private String vote_average;
@@ -9,26 +11,10 @@ public class Movie {
     private String overview;
     private String budget;
     private String revenue;
-    private String[] genres;
+    private List<String> genres;
     private String runtime;
     private String id;
     private String title;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getTagline() {
         return tagline;
@@ -94,11 +80,11 @@ public class Movie {
         this.revenue = revenue;
     }
 
-    public String[] getGenres() {
+    public List<String> getGenres() {
         return genres;
     }
 
-    public void setGenres(String[] genres) {
+    public void setGenres(List<String> genres) {
         this.genres = genres;
     }
 
@@ -110,5 +96,19 @@ public class Movie {
         this.runtime = runtime;
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
