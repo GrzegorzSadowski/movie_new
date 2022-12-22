@@ -1,12 +1,3 @@
-package com.exadel.movie_new.service;
-
-import com.exadel.movie_new.model.Movie;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.springframework.stereotype.Service;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +9,10 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie addMovie(Movie movie) {
         List<Movie> movieData = readJsonData();
-       // Movie moviePresent = null;
+      
 
         boolean isPresent = false;
-        if (movieData != null) {
-            //moviePresent = movieData.parallelStream().filter(mov -> mov.getId().equals(movie.getId())).findAny().orElse(null);
+        if (movieData != null && !movieData.isEmpty()) {
             isPresent = movieData.parallelStream().anyMatch(mov -> mov.getId().equals(movie.getId()));
 
         } else {
