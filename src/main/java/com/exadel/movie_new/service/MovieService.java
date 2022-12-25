@@ -1,6 +1,7 @@
 package com.exadel.movie_new.service;
 
 import com.exadel.movie_new.model.Movie;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 

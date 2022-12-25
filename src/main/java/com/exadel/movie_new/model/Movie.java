@@ -16,6 +16,8 @@ public class Movie {
     private String id;
     private String title;
 
+
+
     public String getTagline() {
         return tagline;
     }
@@ -112,4 +114,3 @@ public class Movie {
         this.title = title;
     }
 }
-
