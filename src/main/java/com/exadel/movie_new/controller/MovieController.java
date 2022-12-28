@@ -1,6 +1,5 @@
 package com.exadel.movie_new.controller;
 
-import com.exadel.movie_new.exception.MovieNotFoundException;
 import com.exadel.movie_new.model.Movie;
 import com.exadel.movie_new.service.MovieService;
 import org.springframework.http.HttpStatus;
@@ -36,7 +35,7 @@ public class MovieController {
 
     @PutMapping
     public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie) {
-        return new ResponseEntity<>(movieService.updateMovie(movie), HttpStatus.CREATED);
+        return new ResponseEntity<>(movieService.updateMovie(movie), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{movieId}")

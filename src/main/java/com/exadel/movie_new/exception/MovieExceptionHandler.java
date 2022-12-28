@@ -25,6 +25,15 @@ public class MovieExceptionHandler {
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = {MovieAlreadyExists.class})
+    public ResponseEntity<Object> handleGeneralException
+            (MovieAlreadyExists e) {
+        ErrorInfo errorInfo = new ErrorInfo("Sorry " + e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+        return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(value = {FilesException.class})
     public ResponseEntity<Object> handleGeneralException
             (FilesException e) {
@@ -32,4 +41,5 @@ public class MovieExceptionHandler {
         );
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }

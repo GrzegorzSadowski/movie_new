@@ -1,18 +1,20 @@
 package com.exadel.movie_new.service;
 
 import com.exadel.movie_new.exception.FilesException;
+import com.exadel.movie_new.exception.MovieAlreadyExists;
 import com.exadel.movie_new.exception.MovieNotFoundException;
 import com.exadel.movie_new.model.Movie;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
-
+import org.springframework.util.CollectionUtils;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -21,12 +23,13 @@ public class MovieServiceImpl implements MovieService {
     public Movie addMovie(Movie movie) {
         List<Movie> movieData = readJsonData();
         boolean isPresent = false;
-        if (movieData != null && !movieData.isEmpty()) {
+        if (!CollectionUtils.isEmpty(movieData)) {
             isPresent = movieData.parallelStream().anyMatch(mov -> mov.getId().equals(movie.getId()));
+        } else { movieData = new ArrayList<>();}
+
+        if (isPresent) {
+            throw new MovieAlreadyExists("movie with such id " + movie.getId() + " already exists");
         } else {
-            movieData = new ArrayList<>();
-        }
-        if (!isPresent) {
             movieData.add(movie);
             writeJsonData(movieData);
         }
@@ -36,7 +39,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<Movie> getAllMovies() {
         List<Movie> movieData = readJsonData();
-        if (movieData.isEmpty()) {
+        if (CollectionUtils.isEmpty(movieData)) {
             throw new MovieNotFoundException("no movies found");
         }
         return movieData;
@@ -45,18 +48,17 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie getMovie(String movieId) {
         List<Movie> movieData = readJsonData();
-        Movie searchedMovie = movieData.parallelStream().filter(mov -> mov.getId().equals(movieId)).findAny().orElse(null);
-        if (searchedMovie == null) {
+        if (searchMovie(movieData, movieId).isEmpty()) {
             throw new MovieNotFoundException("requested movie not found");
         }
-        return searchedMovie;
+        return searchMovie(movieData, movieId).get();
     }
+
 
     @Override
     public Movie updateMovie(Movie movie) {
         List<Movie> movieData = readJsonData();
-        Movie searchedMovie = movieData.parallelStream().filter(mov -> mov.getId().equals(movie.getId())).findAny().orElse(null);
-        if (searchedMovie == null) {
+        if (searchMovie(movieData, movie.getId()).isEmpty()) {
             throw new MovieNotFoundException("cannot update because requested movie is not found");
         }
         movieData.removeIf(mov -> mov.getId().equals(movie.getId()));
@@ -65,11 +67,11 @@ public class MovieServiceImpl implements MovieService {
         return movie;
     }
 
+
     @Override
     public void deleteMovie(String movieId) {
         List<Movie> movieData = readJsonData();
-        Movie deletedMovie = movieData.parallelStream().filter(mov -> mov.getId().equals(movieId)).findAny().orElse(null);
-        if (deletedMovie == null) {
+        if (searchMovie(movieData, movieId).isEmpty()) {
             throw new MovieNotFoundException("the movie you are trying to delete does not exists");
         }
         movieData.removeIf(mov -> mov.getId().equals(movieId));
@@ -99,4 +101,14 @@ public class MovieServiceImpl implements MovieService {
             throw new FilesException("something went wrong during writing file " + e.getMessage());
         }
     }
+
+    public Optional<Movie> searchMovie (List<Movie> movieData, String movieId ){
+        return movieData.parallelStream().filter(mov -> mov.getId().equals(movieId)).findAny();
+
+    }
+
+
+
+
+
 }
