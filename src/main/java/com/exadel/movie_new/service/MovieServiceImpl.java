@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,9 +41,9 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> getAllMovies() {
         List<Movie> movieData = readJsonData();
         if (CollectionUtils.isEmpty(movieData)) {
-            throw new MovieNotFoundException("no movies found");
-        }
-        return movieData;
+            return Collections.emptyList();
+        } else
+        {return movieData;}
     }
 
     @Override
