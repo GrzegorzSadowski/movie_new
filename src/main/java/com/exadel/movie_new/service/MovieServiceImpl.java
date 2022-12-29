@@ -107,9 +107,5 @@ public class MovieServiceImpl implements MovieService {
         return movieData.parallelStream().filter(mov -> mov.getId().equals(movieId)).findAny();
 
     }
-
-
-
-
-
+    
 }
