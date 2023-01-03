@@ -2,6 +2,7 @@ package com.exadel.movie_new.dao;
 
 import com.exadel.movie_new.model.Movie;
 
+import java.io.File;
 import java.util.List;
 
 public interface MovieDao {
