@@ -15,7 +15,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
@@ -25,7 +26,7 @@ public class MovieServiceTest {
     private MovieServiceImpl movieService;
 
     @Mock
-    private MovieDaoImpl movieDao;
+    private MovieDaoImpl movieDaoImpl;
 
     private final Movie newMovie;
     private final Movie newMovie2;
@@ -45,7 +46,7 @@ public class MovieServiceTest {
     @Test
     @DisplayName("Should save the movie to a file")
     void shouldAddNewMovie() {
-        when(movieDao.addMovie(any(Movie.class))).thenReturn(newMovie);
+        doNothing().when(movieDaoImpl).write(any());
         Movie savedMovie = movieService.addMovie(newMovie);
         assertNotNull(savedMovie);
         assertFalse(savedMovie.getId().isEmpty());
@@ -54,15 +55,16 @@ public class MovieServiceTest {
         assertEquals(newMovie.getGenres().get(0), savedMovie.getGenres().get(0));
 
     }
+
     @Test
     @DisplayName("Should fetch all movies")
-    void shouldGetAllMovies(){
+    void shouldGetAllMovies() {
 
         List<Movie> list = new ArrayList<>();
         list.add(newMovie);
         list.add(newMovie2);
 
-        when(movieDao.getAllMovies()).thenReturn(list);
+        when(movieDaoImpl.read()).thenReturn(list);
         List<Movie> movies = movieService.getAllMovies();
         assertNotNull(movies);
         assertFalse(movies.isEmpty());
@@ -71,8 +73,11 @@ public class MovieServiceTest {
 
     @Test
     @DisplayName("Should fetch movie by Id")
-    void shouldGetMovieById(){
-        when(movieDao.getMovie(anyString())).thenReturn(newMovie);
+    void shouldGetMovieById() {
+        List<Movie> list = new ArrayList<>();
+        list.add(newMovie);
+
+        when(movieDaoImpl.read()).thenReturn(list);
         Movie existingMovie = movieService.getMovie(newMovie.getId());
         assertNotNull(existingMovie);
         assertNotEquals(null, existingMovie.getId());
@@ -81,27 +86,38 @@ public class MovieServiceTest {
 
     @Test
     @DisplayName("Should throw exception")
-    void shouldGetMovieByIdException(){
-        when(movieDao.getMovie("200")).thenThrow(MovieNotFoundException.class);
-        assertThrows(MovieNotFoundException.class, ()->movieService.getMovie("200"));
+    void shouldGetMovieByIdException() {
+        List<Movie> list = new ArrayList<>();
+        list.add(newMovie);
+        when(movieDaoImpl.read()).thenReturn(list);
+        assertThrows(MovieNotFoundException.class, () -> movieService.getMovie("200"));
     }
 
     @Test
     @DisplayName("Should update movie")
-    void shouldUpdateMovie(){
-        when(movieDao.updateMovie(any())).thenReturn(newMovie);
+    void shouldUpdateMovie() {
+        List<Movie> list = new ArrayList<>();
+        list.add(newMovie);
+
+        when(movieDaoImpl.read()).thenReturn(list);
+        doNothing().when(movieDaoImpl).write(any());
         newMovie.setTitle("Mad Max");
-        Movie existingMovie= movieService.updateMovie(newMovie);
+        Movie existingMovie = movieService.updateMovie(newMovie);
         assertNotNull(existingMovie);
         assertEquals("Mad Max", existingMovie.getTitle());
     }
+
     @Test
     @DisplayName("Should delete movie")
-    void shouldDeleteMovie(){
-        String movieId= "100";
-        when(movieDao.getMovie("100")).thenReturn(newMovie);
-        doNothing().when(movieDao).deleteMovie(anyString());
+    void shouldDeleteMovie() {
+        List<Movie> list = new ArrayList<>();
+        list.add(newMovie);
+        list.add(newMovie2);
+        String movieId = "100";
+        when(movieDaoImpl.read()).thenReturn(list);
+        doNothing().when(movieDaoImpl).write(any());
         movieService.deleteMovie(movieId);
-        verify(movieDao, times(1)).deleteMovie(newMovie.getId());
+        assertEquals(1, list.size());
+
     }
 }
