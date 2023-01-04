@@ -20,7 +20,7 @@ public class MovieController {
 
     @PostMapping
     public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
-        return new ResponseEntity<>(movieService.addMovie(movie), HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{movieId}")
@@ -35,7 +35,7 @@ public class MovieController {
 
     @PutMapping
     public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie) {
-        return new ResponseEntity<>(movieService.updateMovie(movie), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{movieId}")

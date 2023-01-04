@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface MovieService {
 
-    Movie addMovie(Movie movie);
+    void addMovie(Movie movie);
 
     List<Movie> getAllMovies();
 
     Movie getMovie(String movieId);
 
-    Movie updateMovie(Movie movie);
+    void updateMovie(Movie movie);
 
     void deleteMovie(String movieId);
 }
