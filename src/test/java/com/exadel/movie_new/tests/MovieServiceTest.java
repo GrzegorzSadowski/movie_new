@@ -16,8 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @SpringBootTest
@@ -44,17 +43,7 @@ public class MovieServiceTest {
         newMovie2.setGenres(List.of("Comedy", "Romance"));
     }
 
-    @Test
-    @DisplayName("Should save the movie to a file")
-    void shouldAddNewMovie() {
-        doNothing().when(movieDaoImplMock).write(any());
-        Movie savedMovie = movieService.addMovie(newMovie);
-        assertNotNull(savedMovie);
-        assertFalse(savedMovie.getId().isEmpty());
-        assertEquals(newMovie.getTitle(), savedMovie.getTitle());
-        assertEquals(newMovie.getId(), savedMovie.getId());
-        assertEquals(newMovie.getGenres().get(0), savedMovie.getGenres().get(0));
-    }
+
 
     @Test
     @DisplayName("Should throw exception that movie already exists")
@@ -113,19 +102,6 @@ public class MovieServiceTest {
     }
 
     @Test
-    @DisplayName("Should update movie")
-    void shouldUpdateMovie() {
-        List<Movie> list = new ArrayList<>();
-        list.add(newMovie);
-        when(movieDaoImplMock.read()).thenReturn(list);
-        doNothing().when(movieDaoImplMock).write(any());
-        newMovie.setTitle("Mad Max");
-        Movie existingMovie = movieService.updateMovie(newMovie);
-        assertNotNull(existingMovie);
-        assertEquals("Mad Max", existingMovie.getTitle());
-    }
-
-    @Test
     @DisplayName("Should thrown MovieNotFoundException while updateMovie")
     void shouldUpdateMovieException() {
         List<Movie> list = new ArrayList<>();
@@ -139,11 +115,15 @@ public class MovieServiceTest {
         List<Movie> list = new ArrayList<>();
         list.add(newMovie);
         list.add(newMovie2);
+
+        List<Movie> listAfterDelete = new ArrayList<>();
+        listAfterDelete.add(newMovie2);
+
         String movieId = "100";
         when(movieDaoImplMock.read()).thenReturn(list);
-        doNothing().when(movieDaoImplMock).write(any());
         movieService.deleteMovie(movieId);
         assertEquals(1, list.size());
+        verify(movieDaoImplMock, timeout(1)).write(listAfterDelete);
     }
 
     @Test

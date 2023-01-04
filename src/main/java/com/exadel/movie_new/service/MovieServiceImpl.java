@@ -23,7 +23,7 @@ public class MovieServiceImpl implements MovieService {
 
 
     @Override
-    public Movie addMovie(Movie movie) {
+    public void addMovie(Movie movie) {
         List<Movie> movieData = movieDao.read();
         boolean isPresent = false;
         if (!CollectionUtils.isEmpty(movieData)) {
@@ -36,7 +36,7 @@ public class MovieServiceImpl implements MovieService {
             movieData.add(movie);
             movieDao.write(movieData);
         }
-        return movie;
+
     }
 
     public List<Movie> getAllMovies() {
@@ -50,14 +50,15 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie getMovie(String movieId) {
         List<Movie> movieData = movieDao.read();
-        if (searchMovie(movieData, movieId).isEmpty()) {
+        Optional<Movie> foundMovie = searchMovie(movieData, movieId);
+        if (foundMovie.isEmpty()) {
             throw new MovieNotFoundException("requested movie not found");
         }
-        return searchMovie(movieData, movieId).get();
+        return foundMovie.get();
     }
 
     @Override
-    public Movie updateMovie(Movie movie) {
+    public void updateMovie(Movie movie) {
         List<Movie> movieData = movieDao.read();
         if (searchMovie(movieData, movie.getId()).isEmpty()) {
             throw new MovieNotFoundException("cannot update because requested movie is not found");
@@ -65,7 +66,7 @@ public class MovieServiceImpl implements MovieService {
         movieData.removeIf(mov -> mov.getId().equals(movie.getId()));
         movieData.add(movie);
         movieDao.write(movieData);
-        return movie;
+
     }
 
     @Override
