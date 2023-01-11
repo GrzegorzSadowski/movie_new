@@ -20,7 +20,7 @@ public class MovieController {
 
     @PostMapping
     public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(movieService.addMovie(movie),HttpStatus.CREATED);
     }
 
     @GetMapping("/{movieId}")

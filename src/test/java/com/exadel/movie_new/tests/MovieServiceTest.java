@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
@@ -123,7 +123,7 @@ public class MovieServiceTest {
         when(movieDaoImplMock.read()).thenReturn(list);
         movieService.deleteMovie(movieId);
         assertEquals(1, list.size());
-        verify(movieDaoImplMock, timeout(1)).write(listAfterDelete);
+        verify(movieDaoImplMock).write(listAfterDelete);
     }
 
     @Test

@@ -23,7 +23,7 @@ public class MovieServiceImpl implements MovieService {
 
 
     @Override
-    public void addMovie(Movie movie) {
+    public Movie  addMovie(Movie movie) {
         List<Movie> movieData = movieDao.read();
         boolean isPresent = false;
         if (!CollectionUtils.isEmpty(movieData)) {
@@ -36,7 +36,7 @@ public class MovieServiceImpl implements MovieService {
             movieData.add(movie);
             movieDao.write(movieData);
         }
-
+        return movie;
     }
 
     public List<Movie> getAllMovies() {
